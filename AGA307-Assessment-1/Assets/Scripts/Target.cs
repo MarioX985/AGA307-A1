@@ -16,6 +16,7 @@ public class Target : MonoBehaviour
         if(other.gameObject.tag == "Projectile")
         {
             targetHealth -= 1;
+            sphereMesh.material.color = Color.blue;
         }
 
         if(targetHealth == 0)

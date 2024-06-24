@@ -8,7 +8,7 @@ public class EnemyManager : MonoBehaviour
     public GameObject[] enemyTypes = new GameObject[8];
     public List<GameObject> enemies = new List<GameObject>();
 
-    public GameObject player; 
+    public GameObject player;
 
     private void Start()
     {
@@ -30,6 +30,8 @@ public class EnemyManager : MonoBehaviour
             enemies.Add(enemy);
         }
         print("Enemy Count: " + enemies.Count);
+
+        StartCoroutine(SpawnEnemyDelayed());
 
     }
 
@@ -70,6 +72,20 @@ public class EnemyManager : MonoBehaviour
         }
 
         return closestEnemy;
+    }
+
+    IEnumerator SpawnEnemyDelayed()
+    {
+        for(int i = 0; i < spawnPoint.Length; i++)
+        {
+            int rndEnemy = Random.Range(0, enemyTypes.Length);
+            GameObject enemy = Instantiate(enemyTypes[rndEnemy], spawnPoint[i].position, spawnPoint[i].rotation);
+            enemies.Add(enemy);
+
+            yield return new WaitForSeconds(3);
+        }
+
+        SpawnEnemy();
     }
 
 }
