@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -15,6 +16,14 @@ public class Enemy : MonoBehaviour
     {
         Setup();
         StartCoroutine(Move());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            health -= 1;
+        }
     }
 
     void Setup()
@@ -53,6 +62,23 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(3);
 
         StartCoroutine(Move());
+    }
+
+    void Hit(GameObject other)
+    {
+        GameEvents.OnEnemyHit(this);
+            health--;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        GameEvents.OnEnemyDie(this);
+        StopAllCoroutines();
+        Destroy(this.gameObject);
     }
 
 }

@@ -11,9 +11,10 @@ public class Player : MonoBehaviour
 	[Header("Projectile Settings")]
 
 	public Transform projectileSpawn;
-	public GameObject projectilePrefab;
+	public GameObject[] projectilePrefab;
     public int projectileSpeed = 20;
 	public int projectileLifeTime = 2;
+	public int currentWeapon;
 
     private void Update()
 	{
@@ -26,7 +27,7 @@ public class Player : MonoBehaviour
 
 		controller.Move(movement * movementSpeed * Time.deltaTime);
 
-
+		ChangeWeapon();
 
 		if (Input.GetButtonDown("Fire1"))
 		{
@@ -36,9 +37,26 @@ public class Player : MonoBehaviour
 
 	void Shoot()
 	{
-		GameObject proj = Instantiate(projectilePrefab, projectileSpawn.position, projectileSpawn.rotation);
+		GameObject proj = Instantiate(projectilePrefab[currentWeapon], projectileSpawn.position, projectileSpawn.rotation);
 
 		proj.GetComponent<Rigidbody>().velocity = projectileSpawn.forward * projectileSpeed;
 		Destroy(proj, projectileLifeTime);
+	}
+
+	void ChangeWeapon()
+	{
+		if (Input.GetKeyDown("1"))
+		{
+			currentWeapon = 0;
+
+		}
+		else if (Input.GetKeyDown("2"))
+		{
+			currentWeapon = 1;
+		}
+		else if (Input.GetKeyDown("3"))
+		{
+			currentWeapon = 2;
+		}
 	}
 }

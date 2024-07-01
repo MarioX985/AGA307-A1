@@ -4,12 +4,13 @@ using UnityEngine;
 
 
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
 
     public GameState gameState;
     public Difficulty difficulty;
     int scoreMultiplier = 1;
+    public int score;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,18 @@ public class GameManager : MonoBehaviour
         difficulty = Difficulty.Easy;
 
         Setup();
+
+        GameEvents.EnemyHit += OnEnemyHit;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.EnemyHit -= OnEnemyHit;
+    }
+
+    void OnEnemyHit(Enemy e)
+    {
+        AddScore(10);
     }
 
     void Setup()
@@ -34,5 +47,10 @@ public class GameManager : MonoBehaviour
                 scoreMultiplier = 3;
                 break;
         }
+    }
+
+    public void AddScore(int scoreAdd)
+    {
+        score += scoreAdd * scoreMultiplier;
     }
 }
